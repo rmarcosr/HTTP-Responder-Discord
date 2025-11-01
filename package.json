@@ -1,0 +1,19 @@
+{
+  "name": "http-responder",
+  "version": "1.0.0",
+  "description": "A Bot application used to create HTTP petitions",
+  "main": "index.js",
+  "scripts": {
+    "init": "node ./src/deploy-commands.js && node ./server.js"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Marcos Rodríguez",
+    "url": "https://rmarcosr.netlify.app/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.24.2",
+    "dotenv": "^17.2.3"
+  }
+}

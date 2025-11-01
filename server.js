@@ -1,0 +1,104 @@
+const { Client, GatewayIntentBits, Events, AttachmentBuilder } = require('discord.js');
+require('dotenv').config();
+const fs = require('fs');
+
+
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ]
+});
+
+client.once(Events.ClientReady, (c) => {
+    console.log("\u001b[1;32mBot inicialiced\u001b[0m");
+});
+
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+
+    if (interaction.commandName === 'get') {
+        const url = interaction.options.getString('url');
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                interaction.reply('Error calling the API')
+            }
+            const data = await response.json()
+
+            const jsonString = JSON.stringify(data, null, 2);
+
+            if (jsonString.length < 1900) {
+                interaction.reply({
+                    content: `**\n\`\`\`json\n${jsonString}\n\`\`\``
+                });
+            } else {
+                const filePath = './response.json';
+
+                fs.writeFileSync(filePath, jsonString);
+
+                const file = new AttachmentBuilder(filePath);
+
+                await interaction.reply({
+                    content: 'JSON completo:',
+                    files: [file],
+                });
+
+                fs.unlinkSync(filePath);
+            }
+
+
+
+        } catch (error) {
+            await interaction.reply(`Error: ${error.message}`);
+        }
+    }
+
+    if (interaction.commandName === 'post') {
+        const url = interaction.options.getString('url');
+        const bodyInput = interaction.options.getString('body');
+
+        let body = {};
+        if (bodyInput) {
+            try {
+                body = JSON.parse(bodyInput);
+            } catch (error) {
+                interaction.reply(`Error: ${error.message}`);
+            }
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
+            if (!response.ok) {
+                interaction.reply('Error calling the API')
+            }
+            const data = await response.json()
+
+            const jsonString = JSON.stringify(data, null, 2);
+
+            interaction.reply(jsonString);
+
+
+        } catch (error) {
+            interaction.reply(`Error: ${error.message}`);
+        }
+    }
+});
+
+
+
+
+
+
+
+
+
+client.login(process.env.DISCORD_TOKEN)
