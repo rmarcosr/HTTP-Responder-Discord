@@ -53,18 +53,27 @@ const commands = [
         .toJSON(),
 ];
 
+// When updating commands, use GUILD_ID (the server ID) to register them faster for testing purposes
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
     try {
         console.log('\u001B[33mLoading (/) commands:');
 
-        await rest.put(
-            Routes.applicationGuildCommands(process.env.APPLICATION_ID, process.env.GUILD_ID),
-            { body: commands },
-        );
+        if (process.env.GUILD_ID) {
+            await rest.put(
+                Routes.applicationGuildCommands(process.env.APPLICATION_ID, process.env.GUILD_ID),
+                { body: commands },
+            );
+            console.log(`\u001b[1;32mRegistered guild commands.\u001b[0m`);
+        } else {
+            await rest.put(
+                Routes.applicationCommands(process.env.APPLICATION_ID),
+                { body: commands },
+            );
+            console.log('\u001b[1;32mRegistered global application (/) commands.\u001b[0m');
+        }
 
-        console.log('\u001b[1;32mSuccessfully registered application (/) commands.\u001b[0m');
     } catch (error) {
         console.error(error);
     }
