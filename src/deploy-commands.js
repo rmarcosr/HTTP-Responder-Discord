@@ -22,7 +22,32 @@ const commands = [
         )
         .addStringOption(option =>
             option.setName("body")
-                .setDescription("Body")
+                .setDescription(`The body to send, must use double quotes : {"title": "foo", "body": "bar", "userId": 1}`)
+                .setRequired(true)
+        )
+        .toJSON(),
+
+    new SlashCommandBuilder()
+        .setName("put")
+        .setDescription("Performs a PUT request to a given endpoint")
+        .addStringOption(option =>
+            option.setName('url')
+                .setDescription('URL')
+                .setRequired(true)
+        )
+        .addStringOption(option =>
+            option.setName("body")
+                .setDescription(`The body to send, must use double quotes : {"title": "foo", "body": "bar", "userId": 1}`)
+                .setRequired(true)
+        )
+        .toJSON(),
+
+    new SlashCommandBuilder()
+        .setName("delete")
+        .setDescription("Performs a DELETE request to a given endpoint")
+        .addStringOption(option =>
+            option.setName('url')
+                .setDescription('URL')
                 .setRequired(true)
         )
         .toJSON(),

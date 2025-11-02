@@ -32,7 +32,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
             if (jsonString.length < 1900) {
                 interaction.reply({
-                    content: `**\n\`\`\`json\n${jsonString}\n\`\`\``
+                    content: `**STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
                 });
             } else {
                 const filePath = './response.json';
@@ -42,14 +42,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
                 const file = new AttachmentBuilder(filePath);
 
                 await interaction.reply({
-                    content: 'JSON completo:',
+                    content: `STATUS: ${response.status}`,
                     files: [file],
                 });
 
                 fs.unlinkSync(filePath);
             }
-
-
 
         } catch (error) {
             await interaction.reply(`Error: ${error.message}`);
@@ -84,13 +82,82 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
             const jsonString = JSON.stringify(data, null, 2);
 
-            interaction.reply(jsonString);
+            interaction.reply({
+                content: `**STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
+            });
 
 
         } catch (error) {
             interaction.reply(`Error: ${error.message}`);
         }
     }
+
+    if (interaction.commandName === 'put') {
+        const url = interaction.options.getString('url');
+        const bodyInput = interaction.options.getString('body');
+
+        let body = {};
+        if (bodyInput) {
+            try {
+                body = JSON.parse(bodyInput);
+            } catch (error) {
+                interaction.reply(`Error: ${error.message}`);
+            }
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
+            if (!response.ok) {
+                interaction.reply('Error calling the API')
+            }
+            const data = await response.json()
+
+            const jsonString = JSON.stringify(data, null, 2);
+
+            interaction.reply({
+                content: `STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
+            });
+
+
+        } catch (error) {
+            interaction.reply(`Error: ${error.message}`);
+        }
+    }
+
+    if (interaction.commandName === 'delete') {
+        const url = interaction.options.getString('url');
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
+            if (!response.ok) {
+                interaction.reply('Error calling the API')
+            }
+            const data = await response.json()
+
+            const jsonString = JSON.stringify(data, null, 2);
+
+
+            interaction.reply({
+                content: `**STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
+            });
+
+
+        } catch (error) {
+            await interaction.reply(`Error: ${error.message}`);
+        }
+    }
+
 });
 
 
