@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder, Events } = require('discord.js');
+const { REST, Routes, SlashCommandBuilder } = require('discord.js');
 require('dotenv').config()
 
 const commands = [
@@ -9,6 +9,11 @@ const commands = [
             option.setName('url')
                 .setDescription('URL')
                 .setRequired(true)
+        )
+        .addStringOption(option =>
+            option.setName("token")
+                .setDescription(`The token used to access to resource`)
+                .setRequired(false)
         )
         .toJSON(),
 
@@ -25,6 +30,11 @@ const commands = [
                 .setDescription(`The body to send, must use double quotes : {"title": "foo", "body": "bar", "userId": 1}`)
                 .setRequired(true)
         )
+        .addStringOption(option =>
+            option.setName("token")
+                .setDescription(`The token used to access to resource`)
+                .setRequired(false)
+        )
         .toJSON(),
 
     new SlashCommandBuilder()
@@ -40,6 +50,11 @@ const commands = [
                 .setDescription(`The body to send, must use double quotes : {"title": "foo", "body": "bar", "userId": 1}`)
                 .setRequired(true)
         )
+        .addStringOption(option =>
+            option.setName("token")
+                .setDescription(`The token used to access to resource`)
+                .setRequired(false)
+        )
         .toJSON(),
 
     new SlashCommandBuilder()
@@ -49,6 +64,11 @@ const commands = [
             option.setName('url')
                 .setDescription('URL')
                 .setRequired(true)
+        )
+        .addStringOption(option =>
+            option.setName("token")
+                .setDescription(`The token used to access to resource`)
+                .setRequired(false)
         )
         .toJSON(),
 ];

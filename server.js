@@ -20,9 +20,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     if (interaction.commandName === 'get') {
         const url = interaction.options.getString('url');
+        const token = interaction.options.getString('token');
+
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
 
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, { headers });
             if (!response.ok) {
                 return await interaction.reply('Error calling the API');
             }
@@ -55,6 +61,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.commandName === 'post') {
         const url = interaction.options.getString('url');
         const bodyInput = interaction.options.getString('body');
+        const token = interaction.options.getString('token');
+
 
         let body = {};
         if (bodyInput) {
@@ -64,12 +72,19 @@ client.on(Events.InteractionCreate, async (interaction) => {
                 return await interaction.reply(`Error: ${error.message}`);
             }
         }
+        const headers = {
+            'Content-Type': 'application/json; charset=UTF-8',
+        };
+
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(body),
-                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                headers,
             });
 
             if (!response.ok) {
@@ -90,6 +105,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.commandName === 'put') {
         const url = interaction.options.getString('url');
         const bodyInput = interaction.options.getString('body');
+        const token = interaction.options.getString('token');
 
         let body = {};
         if (bodyInput) {
@@ -101,10 +117,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
 
         try {
+            const headers = { 'Content-type': 'application/json; charset=UTF-8' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
             const response = await fetch(url, {
                 method: 'PUT',
                 body: JSON.stringify(body),
-                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                headers
             });
 
             if (!response.ok) {
@@ -124,11 +143,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     if (interaction.commandName === 'delete') {
         const url = interaction.options.getString('url');
+        const token = interaction.options.getString('token');
 
         try {
+            const headers = { 'Content-type': 'application/json; charset=UTF-8' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
             const response = await fetch(url, {
                 method: 'DELETE',
-                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                headers
             });
 
             if (!response.ok) {
