@@ -24,14 +24,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                interaction.reply('Error calling the API')
+                return await interaction.reply('Error calling the API');
             }
             const data = await response.json()
 
             const jsonString = JSON.stringify(data, null, 2);
 
             if (jsonString.length < 1900) {
-                interaction.reply({
+                return await interaction.reply({
                     content: `**STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
                 });
             } else {
@@ -47,10 +47,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
                 });
 
                 fs.unlinkSync(filePath);
+
+                return;
             }
 
         } catch (error) {
-            await interaction.reply(`Error: ${error.message}`);
+            return await interaction.reply(`Error: ${error.message}`);
         }
     }
 
@@ -63,7 +65,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
             try {
                 body = JSON.parse(bodyInput);
             } catch (error) {
-                interaction.reply(`Error: ${error.message}`);
+                return await interaction.reply(`Error: ${error.message}`);
             }
         }
 
@@ -76,19 +78,19 @@ client.on(Events.InteractionCreate, async (interaction) => {
                 }
             });
             if (!response.ok) {
-                interaction.reply('Error calling the API')
+                return await interaction.reply('Error calling the API')
             }
             const data = await response.json()
 
             const jsonString = JSON.stringify(data, null, 2);
 
-            interaction.reply({
+            return await interaction.reply({
                 content: `**STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
             });
 
 
         } catch (error) {
-            interaction.reply(`Error: ${error.message}`);
+            return await interaction.reply(`Error: ${error.message}`);
         }
     }
 
@@ -101,7 +103,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
             try {
                 body = JSON.parse(bodyInput);
             } catch (error) {
-                interaction.reply(`Error: ${error.message}`);
+                return await interaction.reply(`Error: ${error.message}`);
             }
         }
 
@@ -114,19 +116,19 @@ client.on(Events.InteractionCreate, async (interaction) => {
                 }
             });
             if (!response.ok) {
-                interaction.reply('Error calling the API')
+                return await interaction.reply('Error calling the API')
             }
-            const data = await response.json()
+            const data = await response.json();
 
             const jsonString = JSON.stringify(data, null, 2);
 
-            interaction.reply({
+            return await interaction.reply({
                 content: `STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
             });
 
 
         } catch (error) {
-            interaction.reply(`Error: ${error.message}`);
+            return await interaction.reply(`Error: ${error.message}`);
         }
     }
 
@@ -141,31 +143,24 @@ client.on(Events.InteractionCreate, async (interaction) => {
                 }
             });
             if (!response.ok) {
-                interaction.reply('Error calling the API')
+                return await interaction.reply('Error calling the API')
             }
             const data = await response.json()
 
             const jsonString = JSON.stringify(data, null, 2);
 
 
-            interaction.reply({
+            return await interaction.reply({
                 content: `**STATUS: ${response.status}\n\`\`\`json\n${jsonString}\n\`\`\``
             });
 
 
         } catch (error) {
-            await interaction.reply(`Error: ${error.message}`);
+            return await interaction.reply(`Error: ${error.message}`);
         }
     }
 
 });
-
-
-
-
-
-
-
 
 
 client.login(process.env.DISCORD_TOKEN)
