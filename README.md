@@ -20,8 +20,9 @@ This project is not serious, it's just for fun.
 4. You need create a `.env` file:
 
 ``` bash
-DISCORD_TOKEN="XXXXX"
-APPLICATION_ID="XXXX"
+DISCORD_TOKEN=SECRET_DISCORD_TOKEN
+APPLICATION_ID=YOUR_APPLICATION_ID
+GUILD_ID=OPTIONAL_GUILD_ID
 ```
 5. Finally install dependecies with: 
 
