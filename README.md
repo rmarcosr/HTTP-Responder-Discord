@@ -1,5 +1,11 @@
 # Discord HTTP Responder 
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rmarcosr/HTTP-Responder-Discord)
+![Discord Badge](https://img.shields.io/badge/Discord-gray?style=flat&logo=discord&logoColor=5865F2)
+![JavaScript Badge](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=000)
+![Discord.js Badge](https://img.shields.io/badge/Discord.js-white?style=flat&logo=discorddotjs&logoColor=000)
+
+
 Hey! This is an experiment to create an **HTTP responder using Discord**.  
 This project is not serious, it's just for fun.
 
